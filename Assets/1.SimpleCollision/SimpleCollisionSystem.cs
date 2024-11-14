@@ -13,6 +13,7 @@ partial struct SimpleCollisionSystem : ISystem
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
+        state.RequireForUpdate<SimpleCollision>();
     }
 
     [BurstCompile]
