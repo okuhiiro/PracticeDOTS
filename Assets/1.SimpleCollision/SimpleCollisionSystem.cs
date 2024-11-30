@@ -37,8 +37,17 @@ partial struct SimpleCollisionSystem : ISystem
                     continue;
                 
                 var vec = transform2.ValueRO.Position - transform1.ValueRO.Position;
+                
+                float3 dir;
+                if (vec.Equals(float3.zero))
+                {
+                    dir = new float3(0, 1, 0);
+                }
+                else
+                {
+                    dir = math.normalizesafe(vec);
+                }
                 var distance = math.sqrt(math.lengthsq(vec));
-                var dir = math.normalizesafe(vec);
                 
                 if (distance < Diameter)
                 {
@@ -92,8 +101,17 @@ partial struct SimpleCollisionSystem : ISystem
 
                 var target = entityPositions[i];
                 var vec = target - transform.Position;
+                
+                float3 dir;
+                if (vec.Equals(float3.zero))
+                {
+                    dir = new float3(0, 1, 0);
+                }
+                else
+                {
+                    dir = math.normalizesafe(vec);
+                }
                 var distance = math.sqrt(math.lengthsq(vec));
-                var dir = math.normalizesafe(vec);
                 
                 if (distance < Diameter)
                 {
