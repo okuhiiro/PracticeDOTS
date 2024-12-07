@@ -21,10 +21,9 @@ partial struct SimpleCollisionSystem : ISystem
     {
         NoJobCollision(ref state);
         //JobCollision(ref state);
-
-        //state.Enabled = false;
     }
 
+    [BurstCompile]
     private void NoJobCollision(ref SystemState state)
     {
         foreach (var (transform1, entity1) in
@@ -58,12 +57,13 @@ partial struct SimpleCollisionSystem : ISystem
         }
     }
 
+    [BurstCompile]
     private void JobCollision(ref SystemState state)
     {
         var world = state.WorldUnmanaged;
         var count = state.GetEntityQuery(ComponentType.ReadOnly<LocalTransform>()).CalculateEntityCount();
         
-        var entityPositions= CollectionHelper.CreateNativeArray<float3, RewindableAllocator>(count, ref world.UpdateAllocator);
+        var entityPositions = CollectionHelper.CreateNativeArray<float3, RewindableAllocator>(count, ref world.UpdateAllocator);
         
         new CreatePositionsJob()
         {
@@ -77,7 +77,7 @@ partial struct SimpleCollisionSystem : ISystem
     }
     
     [BurstCompile]
-    public partial struct CreatePositionsJob : IJobEntity
+    private partial struct CreatePositionsJob : IJobEntity
     {
         public NativeArray<float3> entityPositions;
         
@@ -88,7 +88,7 @@ partial struct SimpleCollisionSystem : ISystem
     }
     
     [BurstCompile]
-    public partial struct CollisionJob : IJobEntity
+    private partial struct CollisionJob : IJobEntity
     {
         public NativeArray<float3> entityPositions;
         
