@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 [UpdateBefore(typeof(TransformSystemGroup))]
@@ -27,8 +28,8 @@ partial struct SimpleCollisionSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        //NoJobCollision(ref state);
-        JobCollision(ref state);
+        NoJobCollision(ref state);
+        //JobCollision(ref state);
     }
     
     [BurstCompile]
@@ -41,33 +42,34 @@ partial struct SimpleCollisionSystem : ISystem
     [BurstCompile]
     private void NoJobCollision(ref SystemState state)
     {
-        foreach (var (transform1, entity1) in
+        foreach (var (transform, entity) in
                  SystemAPI.Query<RefRW<LocalTransform>>().WithEntityAccess())
         {
-            foreach (var (transform2, entity2) in
+            float2 Displacement = float2.zero;
+            uint Weight = 0;
+            
+            foreach (var (otherTransform, otherEntity) in
                      SystemAPI.Query<RefRW<LocalTransform>>().WithEntityAccess())
             {
-                if (entity2.Index == entity1.Index)
+                float2 towards = transform.ValueRO.Position.xy - otherTransform.ValueRO.Position.xy;
+                
+                float distancesq = math.lengthsq(towards);
+                float radiusSum = Radius + Radius;
+                if (distancesq > radiusSum * radiusSum || entity == otherEntity)
                     continue;
                 
-                var vec = transform2.ValueRO.Position - transform1.ValueRO.Position;
+                float distance = math.sqrt(distancesq);
+                float penetration = radiusSum - distance;
+                penetration = (penetration / distance);
                 
-                float3 dir;
-                if (vec.Equals(float3.zero))
-                {
-                    dir = new float3(0, 1, 0);
-                }
-                else
-                {
-                    dir = math.normalizesafe(vec);
-                }
-                var distance = math.sqrt(math.lengthsq(vec));
-                
-                if (distance < Diameter)
-                {
-                    transform1.ValueRW.Position -= (Diameter - distance) * dir / 2;
-                    transform2.ValueRW.Position += (Diameter - distance ) * dir / 2;
-                }
+                Displacement += towards * penetration;
+                Weight++;
+            }
+            
+            if (Weight > 0)
+            {
+                Displacement = Displacement / Weight;
+                transform.ValueRW.Position += new float3(Displacement, 0);
             }
         }
     }
@@ -143,7 +145,7 @@ partial struct SimpleCollisionSystem : ISystem
         public LocalTransform Transform;
         
         public float2 Displacement;
-        public float Weight;
+        public uint Weight;
 
         public void Execute(in Entity otherEntity, in LocalTransform otherTransform)
         {
