@@ -1,9 +1,9 @@
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
-
 
 [UpdateInGroup(typeof(SimulationSystemGroup))]
 [UpdateBefore(typeof(TransformSystemGroup))]
@@ -78,19 +78,20 @@ partial struct SimpleCollisionSystem : ISystem
         m_entities.Clear();
         m_Transforms.Clear();
         
-        var copyHandle = new CopyJob
+        CopyJob job1 = new CopyJob
         {
             Entities = m_entities,
             Transforms = m_Transforms,
-        }.Schedule(state.Dependency);
-        copyHandle.Complete();
+        };
+        JobHandle job1Handle = job1.Schedule(state.Dependency);
+        job1Handle.Complete();
         
-        var job = new HashCollisionJob
+        HashCollisionJob job2 = new HashCollisionJob
         {
             Entities = m_entities,
             Transforms = m_Transforms.AsArray()
         };
-        state.Dependency = job.ScheduleParallel(state.Dependency);
+        state.Dependency = job2.ScheduleParallel(state.Dependency);
     }
     
     [BurstCompile]
