@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ManyCollisionMonoPhysics : MonoBehaviour
+public class ManyCollisionMono : MonoBehaviour
 {
     [SerializeField]
     GameObject spritePrefab;
