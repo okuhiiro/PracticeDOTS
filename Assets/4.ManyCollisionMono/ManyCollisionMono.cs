@@ -1,11 +1,21 @@
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ManyCollisionMono : MonoBehaviour
 {
+    private enum Mode
+    {
+        Physics,
+        All,
+        Spatial
+    }
+    
     [SerializeField]
-    GameObject spritePrefab;
+    private GameObject spritePrefab;
     [SerializeField]
     private int spawnCount;
+    [SerializeField]
+    private Mode mode;
     
     void Start()
     {
@@ -19,6 +29,11 @@ public class ManyCollisionMono : MonoBehaviour
 
     void Update()
     {
-        Physics2D.Simulate(Time.fixedDeltaTime);
+        switch (mode)
+        {
+            case Mode.Physics:
+                Physics2D.Simulate(Time.fixedDeltaTime);
+                break;
+        }
     }
 }
