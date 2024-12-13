@@ -23,7 +23,7 @@ partial struct CreateManyCollisionSystem : ISystem
         var rand = Random.CreateFromIndex(1);
         foreach (var entity in entities)
         {
-            var f3 = rand.NextFloat3();
+            var f3 = rand.NextFloat3(-2.0f, 2.0f);
             f3.z = 0;
             var localTransform = LocalTransform.FromPosition(f3);
             SystemAPI.SetComponent(entity, localTransform);

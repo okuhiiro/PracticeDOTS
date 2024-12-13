@@ -12,6 +12,8 @@ partial struct ManyCollisionSystem : ISystem
     private const float Diameter = 0.2f;
     private const float Radius = 0.1f;
     
+    private bool isInitialized;
+    
     NativeList<Entity> m_entities;
     NativeList<LocalTransform> m_Transforms;
 
@@ -20,18 +22,31 @@ partial struct ManyCollisionSystem : ISystem
     {
         state.RequireForUpdate<ManyCollisionData>();
         state.RequireForUpdate<ManyCollision>();
-        
-        m_entities = new NativeList<Entity>(1000, Allocator.Persistent);
-        m_Transforms = new NativeList<LocalTransform>(1000, Allocator.Persistent);
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        NoJobCollision(ref state);
-        //JobCollision(ref state);
+        var data = SystemAPI.GetSingleton<ManyCollisionData>();
+
+        if (isInitialized == false)
+        {
+            m_entities = new NativeList<Entity>(data.SpawnCount, Allocator.Persistent);
+            m_Transforms = new NativeList<LocalTransform>(data.SpawnCount, Allocator.Persistent);
+            isInitialized = true;
+        }
+        
+        switch (data.Mode)
+        {
+            case Mode.NoJob:
+                NoJobCollision(ref state);
+                break;
+            
+            case Mode.Job:
+                JobCollision(ref state);
+                break;
+        }
     }
-    
         
     [BurstCompile]
     public void OnDestroy(ref SystemState state)
