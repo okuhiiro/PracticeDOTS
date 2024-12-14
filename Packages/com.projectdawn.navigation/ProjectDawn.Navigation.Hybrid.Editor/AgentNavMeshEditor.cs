@@ -93,10 +93,10 @@ namespace ProjectDawn.Navigation.Hybrid.Editor
             EditorGUI.BeginProperty(rect, label, property);
 
             var areaIndex = 0;
-            var areaNames = GameObjectUtility.GetNavMeshAreaNames();
+            var areaNames = UnityEngine.AI.NavMesh.GetAreaNames();
             for (var i = 0; i < areaNames.Length; i++)
             {
-                var areaValue = 1 << GameObjectUtility.GetNavMeshAreaFromName(areaNames[i]);
+                var areaValue = 1 << UnityEngine.AI.NavMesh.GetAreaFromName(areaNames[i]);
                 if ((areaValue & property.intValue) != 0)
                     areaIndex |= 1 << i;
             }
@@ -108,7 +108,7 @@ namespace ProjectDawn.Navigation.Hybrid.Editor
                 areaIndex = 0;
                 for (var i = 0; i < areaNames.Length; i++)
                 {
-                    var areaValue = 1 << GameObjectUtility.GetNavMeshAreaFromName(areaNames[i]);
+                    var areaValue = 1 << UnityEngine.AI.NavMesh.GetAreaFromName(areaNames[i]);
                     if ((value & 1 << i) != 0)
                         areaIndex |= areaValue;
                 }
