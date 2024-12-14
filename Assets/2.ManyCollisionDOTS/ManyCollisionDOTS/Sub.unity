@@ -169,7 +169,7 @@ MonoBehaviour:
   Prefab: {fileID: 6407256392665793698, guid: 1e2fb40b0078e6f49a22deb51ea97d39, type: 3}
   PrefabPhysics: {fileID: 6407256392665793698, guid: e39c77faae2181649a6d92a0c892e5d4,
     type: 3}
-  SpawnCount: 2000
+  SpawnCount: 1000
   Mode: 0
 --- !u!1 &1145028692
 GameObject:

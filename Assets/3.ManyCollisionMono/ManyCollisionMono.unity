@@ -625,9 +625,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bd36502b6bd4a549a9a420d061bcb84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritePrefab: {fileID: 6201885539454404415, guid: 7478dc779b988f844b2901e3fc17dcd1,
+  prefab: {fileID: 6201885539454404415, guid: d3ada7614abce474e8241d1d4f7d72da, type: 3}
+  prefabPhysics: {fileID: 6201885539454404415, guid: 7478dc779b988f844b2901e3fc17dcd1,
     type: 3}
-  spawnCount: 2000
+  spawnCount: 1000
+  mode: 0
 --- !u!1 &1437795857
 GameObject:
   m_ObjectHideFlags: 0
