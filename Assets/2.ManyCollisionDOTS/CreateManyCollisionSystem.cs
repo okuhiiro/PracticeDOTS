@@ -1,4 +1,4 @@
-    using Unity.Burst;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
@@ -18,7 +18,6 @@ partial struct CreateManyCollisionSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var data = SystemAPI.GetSingleton<ManyCollisionData>();
-        
         var entities = state.EntityManager.Instantiate(data.Prefab, data.SpawnCount, Allocator.Temp);
         var rand = Random.CreateFromIndex(1);
         foreach (var entity in entities)
@@ -28,7 +27,7 @@ partial struct CreateManyCollisionSystem : ISystem
             var localTransform = LocalTransform.FromPosition(f3);
             SystemAPI.SetComponent(entity, localTransform);
         }
-        
+
         entities.Dispose();
 
         state.Enabled = false;
