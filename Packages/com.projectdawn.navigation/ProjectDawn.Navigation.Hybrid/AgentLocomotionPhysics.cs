@@ -35,7 +35,7 @@ namespace ProjectDawn.Navigation.Hybrid
             float3 desiredDirection = distance > math.EPSILON ? towards / distance : float3.zero;
             body.Force = desiredDirection;
             body.RemainingDistance = distance;
-            body.Velocity = m_Rigidbody.velocity;
+            body.Velocity = m_Rigidbody.linearVelocity;
         }
 
         void LateUpdate()
@@ -77,7 +77,7 @@ namespace ProjectDawn.Navigation.Hybrid
             // Interpolate velocity
             body.Velocity = math.lerp(body.Velocity, body.Force * maxSpeed, math.saturate(DeltaTime * locomotion.Acceleration));
 
-            m_Rigidbody.velocity = body.Velocity;
+            m_Rigidbody.linearVelocity = body.Velocity;
 
             float speed = math.length(body.Velocity);
 
