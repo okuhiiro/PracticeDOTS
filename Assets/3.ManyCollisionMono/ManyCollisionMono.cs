@@ -9,10 +9,8 @@ public class ManyCollisionMono : MonoBehaviour
     {
         Physics,
         All,
-        Spatial
     }
     
-    private const float Diameter = 0.2f;
     private const float Radius = 0.1f;
     
     [SerializeField]
@@ -69,16 +67,24 @@ public class ManyCollisionMono : MonoBehaviour
                             continue;
                         
                         float distance = towards.magnitude;
-                        float penetration = radiusSum - distance;
-                        penetration = (penetration / distance);
-                
+                        float penetration;
+                        if (distance < 0.0001f)
+                        {
+                            penetration = 0.01f;
+                        }
+                        else
+                        {
+                            penetration = radiusSum - distance;
+                            penetration = (penetration / distance);
+                        }
+                        
                         Displacement += towards * penetration;
                         Weight++;
                     }
                     
                     if (Weight > 0)
                     {
-                        Displacement = Displacement / Weight;
+                        Displacement /= Weight;
                         transform.localPosition += Displacement;
                     }
                 }

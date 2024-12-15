@@ -1,12 +1,11 @@
-using System;
 using Unity.Entities;
 using UnityEngine;
 
 public enum Mode
 {
     Physics,
-    NoJob,
-    Job,
+    NoJobAll,
+    JobAll,
     Spatial
 }
 
@@ -14,6 +13,7 @@ public class ManyCollisionAuthoring : MonoBehaviour
 {
     public GameObject Prefab;
     public GameObject PrefabPhysics;
+    [Range(0, 2000)]
     public int SpawnCount;
     public Mode Mode;
 
