@@ -32,11 +32,11 @@ namespace ECS_Spatial_Partitioning
         public void OnUpdate(ref SystemState state)
         {
             state.Enabled = false;
-            Spawn(state);
+            Spawn(ref state);
         }
 
         [BurstCompile]
-        private void Spawn(SystemState state)
+        private void Spawn(ref SystemState state)
         {
             var spawnerEntity = SystemAPI.GetSingletonEntity<Spawner>();
             var spawner = SystemAPI.GetComponentRO<Spawner>(spawnerEntity);
