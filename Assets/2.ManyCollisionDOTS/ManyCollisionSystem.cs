@@ -39,11 +39,17 @@ partial struct ManyCollisionSystem : ISystem
         switch (data.Mode)
         {
             case Mode.NoJob:
-                NoJobCollision(ref state);
+                for (int iteration = 0; iteration < 1; ++iteration)
+                {
+                    NoJobCollision(ref state);
+                }
                 break;
             
             case Mode.Job:
-                JobCollision(ref state);
+                for (int iteration = 0; iteration < 1; ++iteration)
+                {
+                    JobCollision(ref state);
+                }
                 break;
         }
     }
