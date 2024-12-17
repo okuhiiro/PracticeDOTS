@@ -1,11 +1,11 @@
 using Unity.Entities;
 using UnityEngine;
 
-public enum Mode
+public enum DOTSMode
 {
     Physics,
-    NoJobAll,
-    JobAll,
+    AllBustCompiler,
+    AllBustCompilerJob,
     Spatial
 }
 
@@ -15,16 +15,19 @@ public class ManyCollisionAuthoring : MonoBehaviour
     public GameObject PrefabPhysics;
     [Range(0, 2000)]
     public int SpawnCount;
-    public Mode Mode;
+    public DOTSMode Mode;
 
     class Baker : Baker<ManyCollisionAuthoring>
     {
         public override void Bake(ManyCollisionAuthoring authoring)
         {
-            SelectParameter(authoring);
+            if (SceneParameter.Param1 != -1)
+            {
+                authoring.Mode = (DOTSMode)SceneParameter.Param1;
+            }
             
             var prefab = authoring.Prefab;
-            if (authoring.Mode == Mode.Physics)
+            if (authoring.Mode == DOTSMode.Physics)
             {
                 prefab = authoring.PrefabPhysics;
             }
@@ -32,18 +35,10 @@ public class ManyCollisionAuthoring : MonoBehaviour
             var entity = GetEntity(TransformUsageFlags.None);
             AddComponent(entity, new ManyCollisionData()
             {
-                Prefab = GetEntity(prefab, TransformUsageFlags.None),
+                Prefab = GetEntity(prefab, TransformUsageFlags.Dynamic),
                 SpawnCount = authoring.SpawnCount,
                 Mode = authoring.Mode,
             });
-        }
-
-        private void SelectParameter(ManyCollisionAuthoring authoring)
-        {
-            if (SceneParameter.Param1 != -1)
-            {
-                authoring.Mode = (Mode)SceneParameter.Param1;
-            }
         }
     }
 }
@@ -52,5 +47,5 @@ public struct ManyCollisionData : IComponentData
 {
     public Entity Prefab;
     public int SpawnCount;
-    public Mode Mode;
+    public DOTSMode Mode;
 }

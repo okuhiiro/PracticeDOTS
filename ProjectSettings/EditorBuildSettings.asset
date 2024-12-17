@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/1.SimpleCollision/SimpleCollision.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
@@ -14,4 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/3.ManyCollisionMono/ManyCollisionMono.unity
     guid: 529f474783b312c4ba1a9346fedaac3f
+  - enabled: 1
+    path: Assets/Title/Title.unity
+    guid: 4a62ad2d251b3604c994224fc5405177
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0

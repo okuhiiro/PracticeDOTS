@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+public enum MonoMode
+{
+    Physics,
+    All,
+}
+
 public class ManyCollisionMono : MonoBehaviour
 {
-    private enum Mode
-    {
-        Physics,
-        All,
-    }
+  
     
     private const float Radius = 0.1f;
     
@@ -20,14 +22,19 @@ public class ManyCollisionMono : MonoBehaviour
     [SerializeField]
     private int spawnCount;
     [SerializeField]
-    private Mode mode;
+    private MonoMode mode;
     
     private List<Tuple<Transform, GameObject>> objects = new ();
     
     void Start()
     {
+        if (SceneParameter.Param1 != -1)
+        {
+            mode = (MonoMode)SceneParameter.Param1;
+        }
+        
         GameObject prefab = this.prefab;
-        if (mode == Mode.Physics)
+        if (mode == MonoMode.Physics)
         {
             prefab = prefabPhysics;
         }
@@ -44,11 +51,11 @@ public class ManyCollisionMono : MonoBehaviour
     {
         switch (mode)
         {
-            case Mode.Physics:
+            case MonoMode.Physics:
                 Physics2D.Simulate(Time.fixedDeltaTime);
                 break;
             
-            case Mode.All:
+            case MonoMode.All:
                 var count = objects.Count;
                 for (int i = 0; i < count; i++)
                 {

@@ -85,21 +85,21 @@ partial struct ManyCollisionSystem : ISystem
         
         switch (data.Mode)
         {
-            case Mode.NoJobAll:
+            case DOTSMode.AllBustCompiler:
                 for (int iteration = 0; iteration < 1; ++iteration)
                 {
-                    NoJobCollision(ref state);
+                    AllBustCompillerCollision(ref state);
                 }
                 break;
             
-            case Mode.JobAll:
+            case DOTSMode.AllBustCompilerJob:
                 for (int iteration = 0; iteration < 1; ++iteration)
                 {
-                    JobCollision(ref state);
+                    AllBustCompillerJobCollision(ref state);
                 }
                 break;
             
-            case Mode.Spatial:
+            case DOTSMode.Spatial:
                 SpatialJobCollision(ref state);
                 break;
         }
@@ -113,9 +113,9 @@ partial struct ManyCollisionSystem : ISystem
         m_Map.Dispose();
     }
 
-    #region NoJob
+    #region All_BustCompiller
     [BurstCompile]
-    private void NoJobCollision(ref SystemState state)
+    private void AllBustCompillerCollision(ref SystemState state)
     {
         foreach (var (transform, entity) in
                  SystemAPI.Query<RefRW<LocalTransform>>().WithEntityAccess())
@@ -159,9 +159,9 @@ partial struct ManyCollisionSystem : ISystem
     }
     #endregion
     
-    #region Job
+    #region All_BustCompiller_Job
     [BurstCompile]
-    private void JobCollision(ref SystemState state)
+    private void AllBustCompillerJobCollision(ref SystemState state)
     {
         m_Entities.Clear();
         m_Transforms.Clear();
