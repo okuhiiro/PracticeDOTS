@@ -23,11 +23,11 @@ partial struct ManyCollisionSystem : ISystem
         state.RequireForUpdate<ManyCollisionData>();
         state.RequireForUpdate<ManyCollision>();
 
-        CellSize = new float3(1f, 1f, 0f);
+        CellSize = new float3(1.5f, 1.5f, 0f);
         
-        m_Entities = new NativeList<Entity>(2000, Allocator.Persistent);
-        m_Transforms = new NativeList<LocalTransform>(2000, Allocator.Persistent);
-        m_Map = new NativeParallelMultiHashMap<int3, int>(math.ceilpow2(4000), Allocator.Persistent);
+        m_Entities = new NativeList<Entity>(5000, Allocator.Persistent);
+        m_Transforms = new NativeList<LocalTransform>(5000, Allocator.Persistent);
+        m_Map = new NativeParallelMultiHashMap<int3, int>(math.ceilpow2(10000), Allocator.Persistent);
         
         state.EntityManager.AddComponentData(state.SystemHandle, new Singleton
         {

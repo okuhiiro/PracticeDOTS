@@ -13,7 +13,7 @@ public class ManyCollisionAuthoring : MonoBehaviour
 {
     public GameObject Prefab;
     public GameObject PrefabPhysics;
-    [Range(0, 2000)]
+    [Range(0, 5000)]
     public int SpawnCount;
     public DOTSMode Mode;
 
